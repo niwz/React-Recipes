@@ -6,7 +6,7 @@ export default function IngredientList({ ingredients }) {
         <div className="ingredient-grid">
             {ingredients.map(ingredient => {
                 return <Ingredient 
-                key={ingredients.id}
+                key={ingredient.id}
                 {...ingredient} />
             })}
         </div>
