@@ -11,7 +11,6 @@ function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(sampleRecipes);
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId)
-  console.log(selectedRecipe)
 
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -59,7 +58,7 @@ function App() {
     setRecipes(newRecipes)
   }
 
-  return(
+  return(  
     <RecipeContext.Provider value={recipeContextValues}>
       <RecipeList 
         recipes={recipes}

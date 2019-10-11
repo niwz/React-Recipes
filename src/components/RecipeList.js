@@ -1,13 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Recipe from './Recipe';
 import { RecipeContext } from './App'
+import SearchBar from './SearchBar'
 
 export default function RecipeList({ recipes }) {  
     const { handleRecipeAdd } = useContext(RecipeContext)
+    const [filteredRecipes, setFilteredRecipes] = useState(recipes)
+
     return (
         <div className="recipe-list">
+            <SearchBar
+             recipes={recipes}
+             setFilteredRecipes={setFilteredRecipes} />
             <div>
-                {recipes.map(recipe => {
+                {filteredRecipes.map(recipe => {
                     return <Recipe
                     key={recipe.id}
                     {...recipe} />

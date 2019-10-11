@@ -5,6 +5,7 @@
 @import 'buttons.css';
 @import 'ingredient-list.css';
 @import 'recipe-edit.css';
+@import 'search-bar.css';
 
 *, *::before, *::after {
     font-family: Gotham Rounded, sans-serif;
