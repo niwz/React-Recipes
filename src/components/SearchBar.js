@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function SearchBar(props) {
     const { recipes, setFilteredRecipes } = props
+
+    useEffect(() => setFilteredRecipes(recipes), [recipes])
 
     function handleSearch(filter) {
         if (filter === "" || recipes === []) setFilteredRecipes(recipes)
