@@ -10,11 +10,16 @@ const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(sampleRecipes);
-  const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId)
+  const [currentRecipes, setCurrentRecipes] = useState(recipes);
+  const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
 
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
+    if (recipeJSON != null) {
+      const storedRecipes = JSON.parse(recipeJSON)
+      setRecipes(storedRecipes)
+      setCurrentRecipes(storedRecipes)
+    }
   }, [])
 
   useEffect(() => {
@@ -25,7 +30,8 @@ function App() {
     handleRecipeAdd,
     handleRecipeDelete,
     handleRecipeSelect,
-    handleRecipeChange
+    handleRecipeChange,
+    handleSearchResults
   }
 
   function handleRecipeSelect(id) {
@@ -42,6 +48,7 @@ function App() {
       ingredients: []
     }
     setRecipes([...recipes, newRecipe])
+    setCurrentRecipes([...currentRecipes, newRecipe])
   };
 
   function handleRecipeDelete(id) {
@@ -49,19 +56,29 @@ function App() {
       setSelectedRecipeId(undefined)
     }
     setRecipes(recipes.filter(recipe => recipe.id !== id))
+    setCurrentRecipes(currentRecipes.filter(recipe => recipe.id !== id))
   }
 
   function handleRecipeChange(id, recipe) {
     const newRecipes = [...recipes]
-    const index = newRecipes.findIndex(recipe => recipe.id === id)
-    newRecipes[index] = recipe
+    const recipeIndex = newRecipes.findIndex(recipe => recipe.id === id)
+    newRecipes[recipeIndex] = recipe
     setRecipes(newRecipes)
+
+    const newCurrentRecipes = [...currentRecipes]
+    const currentRecipeIndex = newCurrentRecipes.findIndex(recipe => recipe.id === id)
+    newCurrentRecipes[currentRecipeIndex] = recipe
+    setCurrentRecipes(newCurrentRecipes)
+  }
+
+  function handleSearchResults(searchResults) {
+    setCurrentRecipes(searchResults.length > 0 ? searchResults : recipes)
   }
 
   return(  
     <RecipeContext.Provider value={recipeContextValues}>
       <RecipeList 
-        recipes={recipes}
+        recipes={currentRecipes}
       />
       {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>

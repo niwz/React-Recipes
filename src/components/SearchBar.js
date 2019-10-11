@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useContext } from 'react';
+import { RecipeContext } from './App';
 
-export default function SearchBar(props) {
-    const { recipes, setFilteredRecipes } = props
-
-    useEffect(() => setFilteredRecipes(recipes), [recipes])
+export default function SearchBar({ recipes }) {
+    const { handleSearchResults } = useContext(RecipeContext)
 
     function handleSearch(filter) {
-        if (filter === "" || recipes === []) setFilteredRecipes(recipes)
+        console.log(filter, filter === "")
+        if (filter === "") { 
+            handleSearchResults([])
+            return
+        }
         const searchResults = recipes.filter(recipe => recipe.name.toLowerCase().includes(filter.toLowerCase()));
-        setFilteredRecipes(searchResults);
+        handleSearchResults(searchResults);
     }
 
     return (
