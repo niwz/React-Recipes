@@ -10,7 +10,6 @@ const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(sampleRecipes);
-  const [currentRecipes, setCurrentRecipes] = useState(recipes);
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
 
   useEffect(() => {
@@ -18,7 +17,6 @@ function App() {
     if (recipeJSON != null) {
       const storedRecipes = JSON.parse(recipeJSON)
       setRecipes(storedRecipes)
-      setCurrentRecipes(storedRecipes)
     }
   }, [])
 
@@ -30,8 +28,7 @@ function App() {
     handleRecipeAdd,
     handleRecipeDelete,
     handleRecipeSelect,
-    handleRecipeChange,
-    handleSearchResults
+    handleRecipeChange
   }
 
   function handleRecipeSelect(id) {
@@ -48,7 +45,6 @@ function App() {
       ingredients: []
     }
     setRecipes([...recipes, newRecipe])
-    setCurrentRecipes([...currentRecipes, newRecipe])
   };
 
   function handleRecipeDelete(id) {
@@ -56,7 +52,6 @@ function App() {
       setSelectedRecipeId(undefined)
     }
     setRecipes(recipes.filter(recipe => recipe.id !== id))
-    setCurrentRecipes(currentRecipes.filter(recipe => recipe.id !== id))
   }
 
   function handleRecipeChange(id, recipe) {
@@ -64,21 +59,12 @@ function App() {
     const recipeIndex = newRecipes.findIndex(recipe => recipe.id === id)
     newRecipes[recipeIndex] = recipe
     setRecipes(newRecipes)
-
-    const newCurrentRecipes = [...currentRecipes]
-    const currentRecipeIndex = newCurrentRecipes.findIndex(recipe => recipe.id === id)
-    newCurrentRecipes[currentRecipeIndex] = recipe
-    setCurrentRecipes(newCurrentRecipes)
-  }
-
-  function handleSearchResults(searchResults) {
-    setCurrentRecipes(searchResults.length > 0 ? searchResults : recipes)
   }
 
   return(  
     <RecipeContext.Provider value={recipeContextValues}>
       <RecipeList 
-        recipes={currentRecipes}
+        recipes={recipes}
       />
       {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>

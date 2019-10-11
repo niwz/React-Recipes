@@ -1,17 +1,9 @@
-import React, { useContext } from 'react';
-import { RecipeContext } from './App';
+import React from 'react';
 
-export default function SearchBar({ recipes }) {
-    const { handleSearchResults } = useContext(RecipeContext)
+export default function SearchBar({ setSearchString }) {
 
-    function handleSearch(filter) {
-        console.log(filter, filter === "")
-        if (filter === "") { 
-            handleSearchResults([])
-            return
-        }
-        const searchResults = recipes.filter(recipe => recipe.name.toLowerCase().includes(filter.toLowerCase()));
-        handleSearchResults(searchResults);
+    function handleSearch(searchString) {
+        setSearchString(searchString)
     }
 
     return (
