@@ -8,7 +8,7 @@ export default function Ingredient(props) {
 
     return (
         <>
-            <span>{name}:</span>
+            <span>{name}</span>
             <span>{amount}</span>
         </>
     )
